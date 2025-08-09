@@ -50,3 +50,8 @@ class Board:
             return True
     
         return False
+
+    def save_result(self, result) -> None:
+        file_name = 'results.txt'
+        with open(file_name, 'a') as file:
+            file.write(result)
