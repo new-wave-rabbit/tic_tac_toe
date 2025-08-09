@@ -8,6 +8,7 @@ from gameparts import Board
 from gameparts.exceptions import CellOccupiedError, FieldIndexError
 
 pygame.init()
+game = Board()
 
 # Здесь определены разные константы, например 
 # размер ячейки и доски, цвет и толщина линий.
@@ -98,8 +99,10 @@ def draw_figures(board):
 
 
 # Сюда нужно добавить функцию save_result().
-...
-
+def save_result(result) -> None:
+    file_name = 'results.txt'
+    with open(file_name, 'a') as file:
+        file.write(result + '\n')
 
 # В этой функции описана логика игры. Вам нужно её дополнить. По структуре 
 # тут всё то же самое, что было в вашем коде раньше. 
@@ -128,12 +131,24 @@ def main():
 
                 # Сюда нужно дописать код:
                 # если ячейка свободна,
+                if game.board[clicked_row][clicked_col] == ' ':
                     # то сделать ход,
+                    game.make_move(clicked_row, clicked_col, current_player)
                     # проверить на победу,
+                if game.check_win(current_player):
+                    result = f'Победили {current_player}.' 
+                    print(result)
+                    game.save_result(result)
+                    running = False
                     # проверить на ничью,
+                elif game.is_board_full():
+                    result = f'Победили {current_player}.' 
+                    print(result)
+                    game.save_result(result)
+                    running = False
                     # сменить игрока. 
-                    ...
-                    draw_figures(game.board)
+                current_player = 'O' if current_player == 'X' else 'X'
+                draw_figures(game.board)
         
         # Обновить окно игры.
         pygame.display.update()
